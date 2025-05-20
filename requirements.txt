@@ -1,0 +1,5 @@
+flask==0.12.1  # Known vulnerabilities
+pyjwt==1.7.1  # Known vulnerabilities
+sqlite3==2.6.0  # Known vulnerabilities
+python-dotenv==0.10.0  # Known vulnerabilities
+requests==2.20.0  # Known vulnerabilities 

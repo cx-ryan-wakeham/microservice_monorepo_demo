@@ -1,0 +1,68 @@
+name: Checkmarx One Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  checkmarx-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder:
+          - e-commerce/product-catalog
+          - e-commerce/payment-processor
+          - e-commerce/user-authentication
+          - analytics/data-collector
+          - analytics/report-generator
+          - infrastructure/service-registry
+          - infrastructure/config-manager
+        include:
+          - folder: e-commerce/product-catalog
+            project_name: product-catalog
+            tag: monorepo:product-catalog
+          - folder: e-commerce/payment-processor
+            project_name: payment-processor
+            tag: monorepo:payment-processor
+          - folder: e-commerce/user-authentication
+            project_name: user-authentication
+            tag: monorepo:user-authentication
+          - folder: analytics/data-collector
+            project_name: data-collector
+            tag: monorepo:data-collector
+          - folder: analytics/report-generator
+            project_name: report-generator
+            tag: monorepo:report-generator
+          - folder: infrastructure/service-registry
+            project_name: service-registry
+            tag: monorepo:service-registry
+          - folder: infrastructure/config-manager
+            project_name: config-manager
+            tag: monorepo:config-manager
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: List files in workspace
+        run: |
+          echo "Current directory structure:"
+          ls -R
+          echo "Files in target directory:"
+          ls -R ${{ matrix.folder }}
+
+      - name: Checkmarx One Action
+        uses: checkmarx/ast-github-action@main
+        with:
+          base_uri: https://${{ secrets.REGION }}.checkmarx.net
+          cx_tenant: ${{ secrets.TENANT }}
+          cx_client_id: ${{ secrets.CLIENT_ID }}
+          cx_client_secret: ${{ secrets.CLIENT_SECRET }}
+          additional_params: >-
+            --output-path .
+            -s ${{ matrix.folder }}
+            --project-name ${{ matrix.folder }}/${{ matrix.project_name }}
+            --project-tags ${{ matrix.tag }} 
