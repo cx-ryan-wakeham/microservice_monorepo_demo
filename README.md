@@ -23,6 +23,7 @@ The microservices are organized into the following groups:
 
 Each microservice contains intentional security vulnerabilities for demonstration purposes, including but not limited to:
 
+### Application Vulnerabilities
 - SQL Injection
 - Cross-Site Scripting (XSS)
 - Insecure Deserialization
@@ -33,6 +34,18 @@ Each microservice contains intentional security vulnerabilities for demonstratio
 - Security Misconfiguration
 - Using Components with Known Vulnerabilities
 - Insufficient Logging & Monitoring
+
+### Infrastructure as Code Vulnerabilities
+- Public access to resources (S3, RDS, EC2)
+- Overly permissive IAM policies and roles
+- Hardcoded credentials and secrets
+- Missing encryption configurations
+- Open security groups and network access
+- No VPC or network segmentation
+- Disabled security features
+- Weak password policies
+- Missing authentication controls
+- Excessive service permissions
 
 ## Security Scanning
 
